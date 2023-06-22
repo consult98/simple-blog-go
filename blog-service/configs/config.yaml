@@ -4,12 +4,14 @@ Server: # 服务配置：gin的运行模式、默认监听端口、允许读取�
   HttpPort: 8000
   ReadTimeout: 60
   WriteTimeout: 60
+
 App: # 应用配置：每页数量、允许的最大每页数量、应用日志存储路径
   DefaultPageSize: 10
   MaxPageSize: 100
   LogSavePath: storage/logs
   LogFileName: app
   LogFileExt: .log
+
 Database: # 数据库连接所必须参数
   DBType: mysql
   Username: root  # 数据库账号

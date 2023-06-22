@@ -1,6 +1,10 @@
 package setting
 
-import "time"
+import (
+	"fmt"
+	"os"
+	"time"
+)
 
 type ServerSettingS struct { //声明配置属性的结构体，与 config.yaml 配置文件中的参数相同
 	RunMode      string
@@ -35,6 +39,28 @@ func (s *Setting) ReadSection(k string, v interface{}) error { //读取区段配
 	err := s.vp.UnmarshalKey(k, v) // k为configs中某个区段名，将其区段中配置内容映射到应用配置的结构体中。
 	if err != nil {
 		return err
+	}
+
+	return nil
+}
+
+//检查某个文件是否存在
+func Exists(filePath string) bool {
+	if _, err := os.Stat(filePath); os.IsNotExist(err) {
+		return false
+	}
+
+	return true
+}
+
+//创建日志文件
+func (s *Setting) CreateIfNotExists(dir string, perm os.FileMode) error {
+	if Exists(dir) {
+		return nil
+	}
+
+	if err := os.MkdirAll(dir, perm); err != nil {
+		return fmt.Errorf("failed to create directory: '%s', error: '%s'", dir, err.Error())
 	}
 
 	return nil

@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/consult98/simple-blog-go/global"
+	"github.com/consult98/simple-blog-go/internal/model"
 	"github.com/consult98/simple-blog-go/internal/routers"
 	"github.com/consult98/simple-blog-go/pkg/setting"
 	"github.com/gin-gonic/gin"
@@ -17,6 +18,10 @@ func init() {
 	err := setupSetting()
 	if err != nil {
 		log.Fatalf("init.setupSetting err: %v", err)
+	}
+	err = setupDBEngine()
+	if err != nil {
+		log.Fatalf("init.setupDBEngine err: %v", err)
 	}
 }
 
@@ -54,5 +59,22 @@ func setupSetting() error {
 
 	global.ServerSetting.ReadTimeout *= time.Second
 	global.ServerSetting.WriteTimeout *= time.Second
+
+	// 根据app初始化参数创建log文件
+	err = setting.CreateIfNotExists(global.AppSetting.LogSavePath+"/"+global.AppSetting.LogFileName+global.AppSetting.LogFileExt, 0755)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func setupDBEngine() error {
+	var err error
+	global.DBEngine, err = model.NewDBEngine(global.DatabaseSetting) //注意此处不能用:=  因为需要将数据库引擎存入全局变量
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
