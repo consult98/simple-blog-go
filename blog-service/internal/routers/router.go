@@ -1,14 +1,19 @@
 package routers
 
 import (
+	_ "github.com/consult98/simple-blog-go/docs" //指定swagger docs位置
 	v1 "github.com/consult98/simple-blog-go/internal/routers/api/v1"
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"     // swagger embed files
+	ginSwagger "github.com/swaggo/gin-swagger" // gin-swagger middleware
 )
 
 func NewRouter() *gin.Engine { //路由管理
 	r := gin.New()
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
+
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler)) //访问docs中swagger接口文档路由
 
 	article := v1.NewArticle()
 	tag := v1.NewTag()

@@ -1,6 +1,8 @@
 package v1
 
 import (
+	"github.com/consult98/simple-blog-go/pkg/app"
+	"github.com/consult98/simple-blog-go/pkg/errcode"
 	"github.com/gin-gonic/gin"
 )
 
@@ -10,9 +12,14 @@ func NewArticle() Article { //返回一个结构体对象，可以调用结构�
 	return Article{}
 }
 
-//Article路由对应的处理方法（Handler），以结构体方法的形式实现
+/*
+Article路由对应的处理方法（Handler），以结构体方法的形式实现
+*/
 
-func (a Article) Get(c *gin.Context)    {}
+func (a Article) Get(c *gin.Context) {
+	app.NewResponse(c).ToErrorResponse(errcode.ServerError)
+	return
+}
 func (a Article) List(c *gin.Context)   {}
 func (a Article) Create(c *gin.Context) {}
 func (a Article) Update(c *gin.Context) {}
