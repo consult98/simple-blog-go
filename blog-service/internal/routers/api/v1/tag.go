@@ -39,7 +39,6 @@ func (t Tag) List(c *gin.Context) {
 		response.ToErrorResponse(errcode.InvalidParams.WithDetails(errs.Errors()...))
 		return
 	}
-
 	response.ToResponse(gin.H{})
 	return
 }
